@@ -3,7 +3,8 @@ LightingFury
 
 This is P2P chatting program.
 
-You can chat with all if you can
+You can chat with all if you can..
+
 This program can send message to all if all connected..
 
 program description
