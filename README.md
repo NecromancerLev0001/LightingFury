@@ -11,7 +11,7 @@ program description
  - lfpeer: peer program
  - winpeer: windows peer program
 
-How it works: http://www.youtube.com/watch?v=NOSc0sHOz9I(url)
+How it works: http://www.youtube.com/watch?v=NOSc0sHOz9I
 
 etc..
 * Language support: English only 
