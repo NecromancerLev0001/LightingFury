@@ -1,10 +1,15 @@
 LightingFury
 ============
 
-p2p chatting program. 
+This is P2P chatting program.
 
 You can chat with all if you can
 This program can send message to all if all connected..
+
+<program description>
+ - lfserver: server side program
+ - lfpeer: peer program
+ - winpeer: windows peer program
 
 How it works: http://www.youtube.com/watch?v=NOSc0sHOz9I(url)
 
