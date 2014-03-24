@@ -1,8 +1,8 @@
 LightingFury
 ============
-#Written by Su-Jin Lee(kanobaoha@gmail.com)
+>#Written by Su-Jin Lee(kanobaoha@gmail.com)
 
-#This is P2P chatting program.
+>#This is P2P chatting program.
 >You can chat with all if you can..
 >This program can send message to all if all connected..
 
