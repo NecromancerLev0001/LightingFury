@@ -110,7 +110,6 @@ class Processor(object):
     
     def genConn(self, genCnt):
         ''' > try connect '''
-        self.peerCnt = self.peerCnt + 1 
         svPeers = self.dataMan.getServers()
         connCnt = 0
         for id, ip, port in svPeers:
@@ -147,6 +146,8 @@ class Processor(object):
                                    'local_svport': self.localSvPort,
                                    'accept_flg': self.acceptFlg,})
         self.comm.shotMsg(helloMsg)
+        self.peerCnt = self.peerCnt + 1
+        self.modPeerCnt(str(self.peerCnt))
         self.display('==========connection complete==========')
     
     def _sysBye(self, msg):
