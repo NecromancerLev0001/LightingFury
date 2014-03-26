@@ -10,14 +10,14 @@ from hashlib import sha1
 from random import random
 
 from dataman import DataMan
-from commconfig import *
+from LF.config import *
 
 class Processor(object):
     acceptFlg = 'N'
     gui = None
-    
+
     def __init__(self):
-        self.peerCnt = 1
+        self.peerCnt = 0
         self.connection = 0
         self.userID = sha1(str(time()) + str(random())).hexdigest()
         self.dataMan = DataMan(self.userID)
@@ -110,6 +110,7 @@ class Processor(object):
     
     def genConn(self, genCnt):
         ''' > try connect '''
+        self.peerCnt = self.peerCnt + 1 
         svPeers = self.dataMan.getServers()
         connCnt = 0
         for id, ip, port in svPeers:

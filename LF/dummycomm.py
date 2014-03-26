@@ -9,7 +9,7 @@ from twisted.internet import reactor
 
 from lfprotocol import *
 from comm import Communication
-from commconfig import *
+from LF.config import *
 
 class DummyComm(Communication):
         

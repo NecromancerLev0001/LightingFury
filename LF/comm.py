@@ -8,7 +8,7 @@ from time import time, sleep
 from twisted.internet import reactor
 from natpunch import *
 from lfprotocol import *
-from commconfig import *
+from LF.config import *
 
 class Communication:
     connAddrObj = {}

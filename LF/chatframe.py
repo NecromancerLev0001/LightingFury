@@ -6,7 +6,7 @@ Created on 2014. 3. 21.
 
 import wx
 from sweep import LazySweeper
-from commconfig import *  
+from LF.config import *  
 
 CUT_MSG_INTERVAL = 300
 

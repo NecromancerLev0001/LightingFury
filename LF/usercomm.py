@@ -12,7 +12,7 @@ from twisted.internet import reactor
 from natpunch import *
 from lfprotocol import *
 from comm import Communication
-from commconfig import *
+from LF.config import *
 
 class UserComm(Communication):
     def run(self, gui=None):
