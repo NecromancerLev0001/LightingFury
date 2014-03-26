@@ -4,6 +4,7 @@ LightingFury
 >This is unlimited P2P chatting program.
 >>* You can chat with all if you can..
 >>* This program can send message to all if all connected..
+>>* Using technologies: python, twisted, sqlite, wxpython, ..
 
 
 >program description
