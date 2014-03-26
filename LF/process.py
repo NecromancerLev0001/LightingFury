@@ -70,17 +70,17 @@ class Processor(object):
         '''
         if not self._checkVersion(msg):
             return            
-        acceptFlg = DEFAULT_ACCEPT_FLG
-        #if msg['local_ip'] == msg['peer_ip'] or msg['nat_flg'] == 'Y':
-        if msg['local_ip'] == msg['peer_ip'] or msg['nat_flg'] == 'Y':
-            acceptFlg = 'Y'
+        self.acceptFlg = DEFAULT_ACCEPT_FLG
+        self.NatFlg = msg['nat_flg']
+        if msg['local_ip'] == msg['peer_ip'] or self.NatFlg == 'Y':
+            self.acceptFlg = 'Y'
         peers = str(self.dataMan.getSamplePeers())
         sampleMsg = self.__makeMsg({'type1': 'sys',
                                     'type2': 'sample',
                                     'public_ip': msg['peer_ip'],
                                     'peer_cnt': self.peerCnt,
                                     'sample': peers,
-                                    'accept_flg': acceptFlg})
+                                    'accept_flg': self.acceptFlg})
         target = '%s:%s' % (msg['peer_ip'], msg['peer_port']) 
         self.comm.shotMsg(sampleMsg, target)
         
@@ -113,13 +113,28 @@ class Processor(object):
         svPeers = self.dataMan.getServers()
         connCnt = 0
         for id, ip, port in svPeers:
-            if self.comm.tryConnect(ip, int(port)) == 'Y':
-                self.dataMan.updatePeerUseByID(id, 'Y')
+            if self.tryConnect(id, ip, port):
                 connCnt = connCnt + 1
-            else:
-                self.dataMan.deletePeerByID(id)
             if connCnt >= genCnt:
                 break
+            
+    def tryConnect(self, id, ip, port):
+        if self.comm.tryConnect(ip, int(port)) == 'Y':
+            self.dataMan.updatePeerUseByID(id, 'Y')
+            return True
+        self.dataMan.deletePeerByID(id)
+        return False        
+    
+    def _sysHello(self, msg):
+        ''' > increase peer count > reflect msg '''
+        if self.dataMan.regPeer(msg):
+            self.peerCnt = self.peerCnt + 1
+            self.modPeerCnt(str(self.peerCnt))
+        self._reflectMsg(msg)
+        if msg['accept_flg'] == 'Y' and \
+           self.peerCnt < 50 and \
+           self.comm.getConnCnt() < MIN_PEER_CNT:
+            self.tryConnect(msg['peer_id'], msg['public_ip'], msg['public_svport'])
     
     def _genHello(self):
         ''' > shot hello msg '''
@@ -133,13 +148,6 @@ class Processor(object):
         self.comm.shotMsg(helloMsg)
         self.display('==========connection complete==========')
     
-    def _sysHello(self, msg):
-        ''' > increase peer count > reflect msg '''
-        if self.dataMan.regPeer(msg):
-            self.peerCnt = self.peerCnt + 1
-            self.modPeerCnt(str(self.peerCnt))
-        self._reflectMsg(msg)
-
     def _sysBye(self, msg):
         ''' > decrease peer count, delete peer info > reflect msg '''
         self.dataMan.deletePeerByID(msg['owner_id'])

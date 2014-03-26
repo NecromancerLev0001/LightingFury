@@ -15,6 +15,10 @@ class Communication:
     connObjAdd = {}
     connTmObj = {}
     connObjTm = {}
+    terminateFlg = False
+    
+    def getConnCnt(self):
+        return len(self.connAddrObj)
     
     def addPeer(self, ip, port, obj):
         sleep(0.01)
@@ -47,7 +51,7 @@ class Communication:
     def removePeer(self, obj):
         ip, port = self.delPeer(obj)
         self.processor.removePeer(ip, port)
-        if len(self.connAddrObj) <= MIN_PEER_CNT:
+        if len(self.connAddrObj) <= MIN_PEER_CNT and not self.terminateFlg:
             self.processor.genConn(len(self.connAddrObj) - MIN_PEER_CNT - 1)
             
     def __init__(self, processor):
@@ -85,6 +89,7 @@ class Communication:
         self.connAddrObj[target].transport.loseConnection()
     
     def terminateConn(self):
+        self.terminateFlg = True
         for addr, peer in self.connAddrObj.items():
             peer.transport.loseConnection()
         
@@ -93,7 +98,7 @@ class Communication:
         self.terminateConn()
         if self.natFlg == 'Y':
             UPnP_close_port(self.externalPort)
-        reactor.callLater(1, reactor.stop) #@UndefinedVariable
+        reactor.callLater(1.5, reactor.stop) #@UndefinedVariable
 
 def main_ver00():
     pass

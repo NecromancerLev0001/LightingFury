@@ -86,7 +86,6 @@ class DataMan(object):
     
     def deletePeerByID(self, id):
         self._execSql(DELETE_PEER_BY_ID % id)
-        print('DataMan.deleteMsgByTime{0}'.format(self.getAllPeers()))
     
     def deletePeerByAddr(self, addrInfo):
         self._execSql(DELETE_PEER_BY_ADDR % addrInfo)
