@@ -5,7 +5,8 @@ Created on 2014. 3. 21.
 '''
 
 import wx
-from sweep import LazySweeper 
+from sweep import LazySweeper
+from LF.config import *  
 
 CUT_MSG_INTERVAL = 300
 
@@ -28,6 +29,8 @@ class ChatFrame(wx.Frame):
         self.sweeper.addWork(self.refreshHistory)
     
     def checkProcess(self):
+        if not SINGLE_INSTANCE_MODE:
+            return
         name = "LightingFury-%s" % wx.GetUserId()
         self.Checker = wx.SingleInstanceChecker(name)
         if self.Checker.IsAnotherRunning():

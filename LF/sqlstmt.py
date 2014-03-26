@@ -4,14 +4,14 @@ Created on 2014. 3. 21.
 @author: Su-jin Lee
 '''
 
-
-# PEER
-# index
-# > SUBJECT_ID  + PEER_ID
-# > PUBLIC_IP + PUBLIC_PORT,
-# > USE_FLG
-# > ACCEPT_FLG
-ROW_LIMIT = 20
+'''
+PEER
+ index
+ > SUBJECT_ID  + PEER_ID
+ > PUBLIC_IP + PUBLIC_PORT,
+ > USE_FLG
+ > ACCEPT_FLG
+'''
 CREATE_PEER_TBL = '''
                      CREATE TABLE PEER_TBL 
                         (SUBJECT_ID  TEXT, 
