@@ -136,6 +136,13 @@ class Processor(object):
            self.comm.getConnCnt() < MIN_PEER_CNT:
             self.tryConnect(msg['peer_id'], msg['public_ip'], msg['public_svport'])
     
+    def _sysBye(self, msg):
+        ''' > decrease peer count, delete peer info > reflect msg '''
+        self.dataMan.deletePeerByID(msg['owner_id'])
+        self.peerCnt = self.peerCnt - 1 
+        self.modPeerCnt(str(self.peerCnt))
+        self._reflectMsg(msg)
+    
     def _genHello(self):
         ''' > shot hello msg '''
         helloMsg = self.__makeMsg({'type1': 'sys',
@@ -145,29 +152,25 @@ class Processor(object):
                                    'public_svport': self.publicSvPort,
                                    'local_svport': self.localSvPort,
                                    'accept_flg': self.acceptFlg,})
-        self.comm.shotMsg(helloMsg)
+        self.regAndShot(helloMsg)
         self.peerCnt = self.peerCnt + 1
         self.modPeerCnt(str(self.peerCnt))
         self.display('==========connection complete==========')
-    
-    def _sysBye(self, msg):
-        ''' > decrease peer count, delete peer info > reflect msg '''
-        self.dataMan.deletePeerByID(msg['owner_id'])
-        self.peerCnt = self.peerCnt - 1 
-        self.modPeerCnt(str(self.peerCnt))
-        self._reflectMsg(msg)
     
     def genBye(self):
         ''' > shot bye msg '''
         byeMsg = self.__makeMsg({'type1': 'sys',
                                  'type2': 'bye',})
-        self.comm.shotMsg(byeMsg)
+        self.regAndShot(byeMsg)
+        
+    def regAndShot(self, msg):
+        self.dataMan.regMsg(msg)
+        self.comm.shotMsg(msg)
     
     def processMsg(self, msg):
         shotMsg = self.__makeMsg({'type1': 'msg',
                                   'msg': msg})
-        self.dataMan.regMsg(shotMsg)
-        self.comm.shotMsg(shotMsg)
+        self.regAndShot(shotMsg)
         self.display(msg)
     
     def display(self, msg):
@@ -182,4 +185,3 @@ class Processor(object):
     def modPeerCnt(self, cnt):
         if self.gui:
             self.gui.modPeerCnt(cnt)
-
