@@ -14,7 +14,7 @@ LightingFury
 
 >etc..
 >>* Language support: English only 
->>* It’s just test version so this program may be some errors.
+>>* It’s just test version so this program may be some bugs.
 
 
 >Written by Su-Jin Lee(kanobaoha@gmail.com)
